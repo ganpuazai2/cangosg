@@ -4,6 +4,16 @@ Plain-language record of every change to the app, newest first.
 
 ## 2026-10-23
 
+### Uploaded to GitHub
+- Code is now in a **private** GitHub repo: https://github.com/ganpuazai2/cangosg
+- Checked before uploading: `.env` and the keys are not included.
+
+### Live on the web 🎉
+- Deployed on Vercel: **https://cangosg.vercel.app**
+- Keys added in Vercel's Environment Variables (pasted from `.env`).
+- Checked online: the app loads, live bus arrivals (e.g. 901M at Admiralty), place search, trip planning (Admiralty → Newton), MRT alerts, the full stop list and the install file all work.
+- From now on, every change uploaded to GitHub goes live automatically.
+
 ### Renamed to CanGo SG
 - New name **CanGo SG** everywhere: page title, header wordmark ("CanGo" with a small "SG" badge), home-screen app name, install button and reminder messages.
 - Checked first: "CanGo" alone is used by a Sri Lankan taxi app (on both app stores) and others, so we went with "CanGo SG". `cangosg.vercel.app` looked free.

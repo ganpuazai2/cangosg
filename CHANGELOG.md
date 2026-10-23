@@ -4,6 +4,13 @@ Plain-language record of every change to the app, newest first.
 
 ## 2026-10-23
 
+### Fix: settings couldn't be ticked
+- **Bug:** on the Profile page, Larger text, Accessible travel, Fewer transfers and Vibrate on tap wouldn't stay ticked.
+- **Cause:** the colour picker buttons were found by their `data-theme` label, but the whole page also carries that label (that's how the chosen colour is applied). So every click anywhere counted as "pick a colour", which re-applied the saved settings and unticked the box straight away.
+- **Fix:** only the four colour buttons react now. Tested: all four switches tick and untick, and picking Sunset still works.
+- **Offline cache:** the page and app code now load the newest version first and only use the saved copy when offline. This stops an old page (like the one still saying "Go SG") from showing after an update.
+- Files: `public/app.js`, `public/sw.js` (offline cache `gosg-v19`)
+
 ### Uploaded to GitHub
 - Code is now in a **private** GitHub repo: https://github.com/ganpuazai2/cangosg
 - Checked before uploading: `.env` and the keys are not included.

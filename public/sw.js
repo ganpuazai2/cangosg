@@ -3,7 +3,7 @@
 // - Live data (/api/*): always from the network, never cached
 // - Map tiles: cached as you browse (capped)
 
-const VERSION = "gosg-v18";
+const VERSION = "gosg-v19";
 const SHELL = [
   "/", "/index.html", "/app.js", "/manifest.webmanifest", "/stops.json", "/services.json",
   "/icons/icon-192.png", "/icons/apple-touch-icon.png",
@@ -32,6 +32,19 @@ async function staleWhileRevalidate(req) {
   return hit || (await net) || (req.mode === "navigate" ? cache.match("/") : Response.error());
 }
 
+// The page and app code: newest from the network first, saved copy only when offline,
+// so an old page never mixes with new code
+async function networkFirst(req) {
+  const cache = await caches.open(VERSION);
+  try {
+    const r = await fetch(req);
+    if (r.ok) cache.put(req, r.clone());
+    return r;
+  } catch {
+    return (await cache.match(req, { ignoreSearch: req.mode === "navigate" })) || (req.mode === "navigate" ? cache.match("/") : Response.error());
+  }
+}
+
 async function tile(req) {
   const cache = await caches.open(TILES);
   const hit = await cache.match(req);
@@ -57,6 +70,10 @@ self.addEventListener("fetch", (e) => {
   if (url.pathname.startsWith("/_vercel/")) return; // analytics: let it pass
   if (url.hostname === "www.onemap.gov.sg" && url.pathname.startsWith("/maps/tiles/")) {
     e.respondWith(tile(req).catch(() => Response.error()));
+    return;
+  }
+  if (url.origin === location.origin && (req.mode === "navigate" || /\.(js|html|webmanifest)$/.test(url.pathname))) {
+    e.respondWith(networkFirst(req));
     return;
   }
   if (url.origin === location.origin || ["cdnjs.cloudflare.com", "fonts.googleapis.com", "fonts.gstatic.com"].includes(url.hostname)) {

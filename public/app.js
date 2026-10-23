@@ -714,7 +714,7 @@ function setupShell() {
     toast("↻ Bus times refreshed");
   };
   $("mapLoc").onclick = locate;
-  document.querySelectorAll("[data-theme]").forEach((b) => (b.onclick = () => { prefs.theme = b.dataset.theme; savePrefs(); applyPrefs(); }));
+  document.querySelectorAll(".themes [data-theme]").forEach((b) => (b.onclick = () => { prefs.theme = b.dataset.theme; savePrefs(); applyPrefs(); }));
   document.querySelectorAll("[data-illo]").forEach((el) => (el.innerHTML = illo(el.dataset.illo)));
   setupSheets();
   let tab = "home";
@@ -1696,7 +1696,7 @@ function applyPrefs() {
   $("prefFewer").checked = !!prefs.fewer;
   $("prefHaptic").checked = !!prefs.haptic;
   document.body.dataset.theme = prefs.theme || "teal";
-  document.querySelectorAll("[data-theme]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.theme === (prefs.theme || "teal"))));
+  document.querySelectorAll(".themes [data-theme]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.theme === (prefs.theme || "teal"))));
 }
 function setupSettings() {
   const bind = (id, key) => ($(id).onchange = (e) => {

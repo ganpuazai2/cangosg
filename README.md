@@ -1,61 +1,70 @@
-# CanGo SG — Singapore bus & MRT web app
+# CanGo SG 🚌
 
-Live bus arrivals, trip planning, MRT disruption alerts, and a map. Installable on your phone's home screen.
+**The fastest way to check Singapore bus times with one hand.** Live arrivals, trip planning, MRT alerts and a live bus map, in a friendly app you can install on your phone. No ads.
 
 **Try it:** https://cangosg.vercel.app
 
-> The code is public so you can see what I'm building. It is not open source: all rights reserved (see `LICENSE`).
+<p>
+  <img src="docs/screenshots/home.png" width="200" alt="Home: your nearest stop with big live countdowns">
+  <img src="docs/screenshots/stop.png" width="200" alt="Bus stop sheet with the full arrival board">
+  <img src="docs/screenshots/map.png" width="200" alt="Live map with buses gliding towards the stop">
+  <img src="docs/screenshots/home-dark.png" width="200" alt="Home in dark mode">
+</p>
+
+<sub>Screenshots use demo bus times.</sub>
+
+> The code is public so you can see what I'm building. It is **not** open source: all rights reserved (see [`LICENSE`](LICENSE)).
+
+## Why another bus app?
+The most common complaints about Singapore bus apps are wrong timings, intrusive ads, slow or cluttered screens, and clumsy favourites. CanGo SG is built around fixing those:
+
+- **Honest timings.** If a bus's ETA jumps or doesn't match its GPS, it shows a range ("~4–7m") and an *unstable* tag instead of a falsely precise number. A banner appears when LTA's timing feed looks down. Every board shows a live "Updated 12s ago" dot.
+- **Readable in under 2 seconds.** Huge LED-style countdowns, green when the bus is ≤ 2 min away, plus bus type (single, double, bendy) and crowding.
+- **One-handed.** Bottom tab bar, a "Where to?" button in thumb reach, bottom sheets and swipe gestures. Nothing important in the top corners.
+- **Accessible.** Crowding uses shape *and* colour (● seats, ◐ standing, ■ full) for colourblind users. Larger text option, wheelchair-accessible bus marking, reduced-motion support, light and dark mode.
+- **No ads.** Ever, in the free version.
 
 ## Features
-- **Trip planner** (bus + MRT) with *Now*, *Leave at* and *Arrive by* (late routes are flagged)
-- **Bus only** switch for bus-only routes, and **📍 tap a stop** in a route to see it on the map
-- **Traffic jam warnings** on bus routes near live LTA road incidents
-- **Leave-now nudge**: compares your walk to the first stop against live bus ETAs (Leave now / Hurry / Leave in X min)
-- **Map** (OneMap tiles): route lines coloured by MRT line, nearby stops you can tap
-- **Buses near you** with live/scheduled labels, bus crowding dots, and buses you can't reach in time struck out
-- **Favourites**: starred stops show live timings on open; saved places become one-tap chips (stored on the device)
-- **MRT disruption mode**: routes avoiding the broken line come first, plus bus-only alternatives
-- **Rain mode**: when NEA forecasts rain near you, routes with less walking are preferred
-- **MRT platform crowd** levels on train legs, plus a tap-to-open **crowd forecast** chart (next 3 hours) with a "quieter from" tip
-- **Live bus dots** on the map and a **bus approach strip** showing buses sliding towards your stop
-- **Your trips**: tap "I'm taking this route" to log trips; monthly count, time on transit, estimated fares, most-taken routes (stored on the phone)
-- **My commute**: save Home and Work, and the top card shows the best route and leave time (to work before 2 pm, home after)
-- **Reliability signals**: "timing unstable" when a bus's ETA jumps or doesn't match its GPS; a banner when LTA's timing feed looks down, with usual frequencies from the timetable
-- **Offline fallback**: last arrivals and routes are saved on the phone and shown with an "as of" time when there's no signal
-- **Settings**: larger text, accessible travel (♿ wheelchair-accessible buses, less walking), fewer transfers
-- **Long-transfer warnings** at big interchanges, and **Report a wrong timing** (pre-filled note + LTA feedback form)
-- **Installable (PWA)**, opens instantly, auto-refreshes every 30 s, "updated X ago" labels
-- API rate limiting so nobody burns through your quotas
+**Home: "Your buses now"**
+- Your nearest stop first, then the stops you've saved, as big live countdown boards
+- Swipe a bus ← for a 🔔 reminder, → to 📌 pin it (or press and hold the bus number). Pinned buses show first
+- "Go now 🏃" when it's time to walk to the stop
 
-## Structure
+**Stops and map**
+- Tap any stop for a bottom sheet with the full arrival board and an approach strip of buses heading your way
+- Live map with buses that glide towards the stop between updates. Tap a bus for "3 min · seats available · double deck"
+
+**Trip planner ("Where to?")**
+- Bus + MRT or bus-only routes, with Now / Leave at / Arrive by and a one-tap "📍 Here" for your current location
+- MRT strip-map steps in official line colours, fares, crowd levels and a crowd forecast for train legs
+- Tap a part of the route on the map to highlight it. Traffic incident warnings on bus legs
+- Disruption mode puts routes that avoid a broken MRT line first. Rain mode prefers less walking
+
+**On the move**
+- **Ride mode:** follows your trip step by step and buzzes "get off at the next stop"
+- **Reminders:** "buzz me when bus 969 is 2 min away"
+- **My commute:** save Home and Work for a one-tap best route and leave time
+
+**Personal**
+- Favourites you can reorder and nickname ("Home stop"), saved places, trip history with monthly stats
+- Accent colours (Teal, Orchid, Marina, Sunset), friendly copy and little Singapore illustrations
+- Installable (PWA), opens instantly, works offline with the last saved timings
+
+## Built with
+- Plain HTML, CSS and JavaScript: no framework, fast to load
+- [Leaflet](https://leafletjs.com/) maps with [OneMap](https://www.onemap.gov.sg/) tiles
+- Serverless API on [Vercel](https://vercel.com/) that keeps the API keys off the phone
+- Data from [LTA DataMall](https://datamall.lta.gov.sg/) (bus arrivals, stops, MRT alerts, crowding, traffic), OneMap (search and routing) and data.gov.sg (weather)
+- Built with help from Claude (Anthropic)
+
+## Project layout
 ```
-public/            what users load
-  index.html       page + styles
-  app.js           all front-end logic
-  sw.js            service worker (offline shell, tile cache)
-  manifest.webmanifest, icons/
-  stops.json       built at deploy time (all bus stops, compact)
-  services.json    built at deploy time (usual bus frequencies)
-api/               serverless functions (keys stay here)
-  arrivals, route, search, alerts, traffic, crowd, crowdforecast, weather, nearby (fallback)
-scripts/build-stops.mjs   runs on each deploy to build stops.json
-vercel.json        build + output settings
+public/        the app: index.html (page + styles), app.js, sw.js (offline), icons
+api/           serverless functions: arrivals, route, search, alerts, traffic, crowd, weather…
+scripts/       build-stops.mjs (bus stop list, built on deploy), local-server.mjs (local preview)
+docs/          screenshots
+CHANGELOG.md   every change, in plain language
 ```
 
-## Setup
-1. **LTA DataMall key**: https://datamall.lta.gov.sg/content/datamall/en/request-for-api.html (free)
-2. **OneMap account**: https://www.onemap.gov.sg/apidocs/register (free)
-3. Put this folder in a GitHub repo and import it into Vercel (Framework preset: **Other**; vercel.json sets the rest).
-4. Environment variables in Vercel → Project → Settings → Environment Variables:
-   - `LTA_ACCOUNT_KEY` (required, also used at build time for stops.json)
-   - `ONEMAP_EMAIL`, `ONEMAP_PASSWORD` (required for routing)
-   - `DATAGOV_API_KEY` (optional, higher weather rate limit)
-5. Redeploy. On your phone: open the site → Share → Add to Home Screen (iPhone) or tap **Install app** (Android).
-
-Optional: Vercel → Analytics → Enable, to see usage. Vercel → Firewall → add a rate-limit rule on `/api/*` for stronger protection.
-
-Bus stops rarely change, but redeploy every month or so to refresh stops.json.
-
-## Things to verify on first deploy
-- **Arrive by** sends `arriveBy=true` to OneMap. If OneMap ignores it, results depart at that time instead; the app still flags routes that arrive late.
-- **MRT crowd tags** rely on OneMap returning station codes (e.g. `EW15`) for train legs. If it doesn't, the tags simply don't show.
+## Progress
+See [`CHANGELOG.md`](CHANGELOG.md) for everything built so far. Next up: a native app with Expo (lock-screen countdowns, widgets, alerts with the phone locked).

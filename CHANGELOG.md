@@ -4,6 +4,12 @@ Plain-language record of every change to the app, newest first.
 
 ## 2026-10-29
 
+### Repo tidy-up
+- **README rewritten** for the current app: what makes it different, all features, screenshots (Home, stop sheet, live map, dark mode, taken with demo bus times), what it's built with, and the live link. Removed the step-by-step "deploy your own copy" guide (it clashed with the all-rights-reserved licence) and internal to-do notes.
+- Screenshots added in `docs/screenshots/`.
+- Shortened two older changelog entries that described the paid-tier plan.
+- `package.json`: name `cangosg`, version **1.0.0** (launched). Cleaned up `.gitignore`.
+
 ### Repo made public
 - So people can see what I'm building. The code is **not** open source: added an "all rights reserved" `LICENSE` (people can read it, not copy or reuse it) and a note in `README.md` with the live link.
 - Before going public:
@@ -90,7 +96,7 @@ The whole app is now laid out for use with one thumb. Main controls are in the b
 - Keeps the screen on while a reminder is active, because a web page pauses when the phone locks. The sheet says so plainly: "Keep Go SG open on screen… Alerts with your phone locked are coming later."
 - Reminders expire after an hour.
 - Tested with real buses at Admiralty: the sheet opened from a tap, and a reminder fired with the pop-up.
-- `PLAN-free-and-paid.md`: expanded the Go SG Plus list (phone-locked alerts, daily commute alerts, reliability score per bus, best time to leave, monthly travel report, share my ride, etc.) and the "free = catch the bus, Plus = save time before you leave" rule.
+- Updated private notes on a possible future paid tier (kept outside this repo).
 - Files: `public/index.html`, `public/app.js`, `public/sw.js` (offline cache `gosg-v16`, tapping a notification opens the app)
 
 ### Fixes from the competitor-complaints research
@@ -151,7 +157,7 @@ Based on the research into what users hate about MyTransport.SG, Moovit, SG Buse
 - **Stars pop** when you save a favourite, with a small "★ Saved to favourites" message at the bottom.
 - **Loading placeholders:** grey shimmering cards instead of "Loading…" text. Route results slide in one after another.
 - Respects the phone's "reduce motion" setting.
-- New `PLAN-free-and-paid.md`: research on what Transit, Citymapper, Moovit and Singapore bus apps charge for, and a proposed free vs "Go SG Plus" split.
+- Researched how other transit apps split free and paid features (notes kept private).
 - Files: `public/index.html`, `public/app.js`, `public/sw.js` (offline cache `gosg-v12`), `public/manifest.webmanifest`
 
 ### Small touches: pull to refresh, arrival pulse, swipe between routes

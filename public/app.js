@@ -1253,11 +1253,48 @@ $("rideEnd").onclick = () => endRide();
 $("rideSkip").onclick = () => rideNextStep();
 
 // ================= place search =================
+function useHere() {
+  const btn = $("useHere"), input = $("from");
+  const set = () => {
+    state.from = { ...state.here, name: "Current location" };
+    input.value = "📍 Current location";
+    btn.classList.add("on");
+    input.parentElement.querySelector(".suggest")?.remove();
+    if (state.to) planTrip();
+  };
+  if (state.here) return set();
+  if (!navigator.geolocation) return toast("Location isn't available on this device");
+  btn.textContent = "Finding…"; btn.disabled = true;
+  navigator.geolocation.getCurrentPosition((pos) => {
+    state.here = { lat: pos.coords.latitude, lng: pos.coords.longitude, name: "Current location" };
+    btn.textContent = "📍 Here"; btn.disabled = false;
+    set();
+    locate(); // also fills Nearby and Home now that we have permission
+  }, () => {
+    btn.textContent = "📍 Here"; btn.disabled = false;
+    toast("Turn on location to use where you are");
+  }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+}
 function autocomplete(input, key) {
   let timer, box, seq = 0;
   const close = () => { box?.remove(); box = null; };
+  // in the From box, offer "Use my current location" as the first choice
+  const hereOpt = () => {
+    if (key !== "from") return;
+    const b = document.createElement("button");
+    b.setAttribute("role", "option"); b.className = "here-opt";
+    b.innerHTML = `📍 Use my current location<small>Start from where you are now</small>`;
+    b.onclick = () => { close(); useHere(); };
+    return b;
+  };
+  if (key === "from") input.addEventListener("focus", () => {
+    if (input.value.trim() || box) return;
+    box = document.createElement("div"); box.className = "suggest"; box.setAttribute("role", "listbox");
+    box.appendChild(hereOpt()); input.parentElement.appendChild(box);
+  });
   input.addEventListener("input", () => {
     state[key] = null;
+    if (key === "from") $("useHere").classList.remove("on");
     if (key === "to") syncStarTo();
     clearTimeout(timer);
     const q = input.value.trim();
@@ -1267,10 +1304,11 @@ function autocomplete(input, key) {
       const { results } = await api(`/api/search?q=${encodeURIComponent(q)}`).catch(() => ({ results: [] }));
       if (mine !== seq) return; // a newer search is in flight
       close();
-      if (!results.length) return;
+      if (!results.length && key !== "from") return;
       box = document.createElement("div");
       box.className = "suggest";
       box.setAttribute("role", "listbox");
+      if (key === "from") box.appendChild(hereOpt());
       results.forEach((r) => {
         const b = document.createElement("button");
         b.setAttribute("role", "option");
@@ -2021,12 +2059,16 @@ function boot() {
   document.querySelectorAll("[data-when]").forEach((b) => (b.onclick = () => setWhen(b.dataset.when)));
   document.querySelectorAll("[data-only]").forEach((b) => (b.onclick = () => setOnly(b.dataset.only)));
   $("swap").onclick = () => {
+    // an empty From means "current location", so carry that across when swapping
+    if (!state.from && !$("from").value.trim() && state.here) { state.from = { ...state.here, name: "Current location" }; $("from").value = "📍 Current location"; }
     [state.from, state.to] = [state.to, state.from];
     [$("from").value, $("to").value] = [$("to").value, $("from").value];
+    $("useHere").classList.toggle("on", state.from?.name === "Current location");
     syncStarTo();
   };
   $("starTo").onclick = () => state.to && togglePlace(state.to);
   $("go").onclick = planTrip;
+  $("useHere").onclick = useHere;
   $("locBtn").onclick = locate;
   $("homeLoc").onclick = locate;
   $("saveHome").onclick = () => setCommutePlace("home");

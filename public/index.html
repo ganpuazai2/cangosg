@@ -564,6 +564,12 @@
   :root { --tab-h: 64px; --thumb-h: 64px; --bottom: calc(var(--tab-h) + env(safe-area-inset-bottom)); }
   main { padding-bottom: calc(var(--bottom) + var(--thumb-h) + 28px); }
   header.hero { display: grid; grid-template-columns: 1fr auto; align-items: center; row-gap: 2px; padding-bottom: 16px; }
+  .here-btn { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); min-height: 40px; padding: 0 12px; border: 0; border-radius: 10px;
+              background: color-mix(in srgb, var(--accent) 14%, var(--card)); color: var(--accent); font-size: 14px; font-weight: 800; }
+  .here-btn:active:not(:disabled) { transform: translateY(-50%) scale(.95); }
+  .here-btn.on { background: var(--accent); color: var(--accent-ink); }
+  #from { padding-right: 96px; }
+  .suggest .here-opt { color: var(--accent); font-weight: 800; }
   .wm-sg { font-size: .55em; font-weight: 800; margin-left: 4px; padding: 2px 6px; border-radius: 6px; background: rgba(255,255,255,.18); vertical-align: .35em; }
   header.hero .clock { font: 900 24px/1 var(--dot); color: var(--sun); text-shadow: 0 0 10px rgba(255,178,30,.45); }
   header.hero .greet { grid-column: 1 / -1; margin: 2px 0 0; }
@@ -835,7 +841,8 @@
     <div class="grab" aria-hidden="true"></div>
     <div class="sheet-head"><h3 id="planTitle">Where to? 🧭</h3><button class="btn small ghost sheet-x" data-close aria-label="Close">✕</button></div>
     <div class="sheet-scroll" id="planBody">
-      <div class="field"><label for="from">From</label><input id="from" placeholder="Current location" autocomplete="off" /></div>
+      <div class="field"><label for="from">From</label><input id="from" placeholder="Current location" autocomplete="off" />
+        <button class="here-btn" id="useHere" aria-label="Use my current location as the start">📍 Here</button></div>
       <div class="field"><label for="to">To</label><input id="to" placeholder="Place, MRT or postal code" autocomplete="off" />
         <button class="star in-field" id="starTo" aria-label="Save destination" hidden>☆</button></div>
       <div class="when" role="group" aria-label="When">

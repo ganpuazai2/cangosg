@@ -2,6 +2,19 @@
 
 Plain-language record of every change to the app, newest first.
 
+## 2026-10-29
+
+### "Use my location" in Where to?
+Asked for after using the app: no more typing your start point every time.
+- **📍 Here button** inside the **From** box. One tap fills in "📍 Current location". If a destination is already chosen, it finds routes straight away.
+- If the app doesn't know your location yet, the button shows "Finding…", asks for location once, then fills it in (and also loads Nearby and Home).
+- **Tap into the From box** and the first option in the list is **"📍 Use my current location"**. It also stays at the top while you type a place.
+- The button turns solid teal while "Current location" is being used. Typing something else turns it back.
+- **⇅ Swap** now carries "Current location" across, so you can quickly plan the trip back home.
+- If location is off, it shows "Turn on location to use where you are".
+- Tested with a simulated location at Admiralty: the button filled in the start and found routes to Newton; the dropdown option appeared.
+- Files: `public/index.html`, `public/app.js`, `public/sw.js` (offline cache `gosg-v20`)
+
 ## 2026-10-23
 
 ### Fix: settings couldn't be ticked

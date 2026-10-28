@@ -3,7 +3,7 @@
 // - Live data (/api/*): always from the network, never cached
 // - Map tiles: cached as you browse (capped)
 
-const VERSION = "gosg-v19";
+const VERSION = "gosg-v20";
 const SHELL = [
   "/", "/index.html", "/app.js", "/manifest.webmanifest", "/stops.json", "/services.json",
   "/icons/icon-192.png", "/icons/apple-touch-icon.png",

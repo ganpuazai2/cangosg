@@ -2,6 +2,10 @@
 
 Live bus arrivals, trip planning, MRT disruption alerts, and a map. Installable on your phone's home screen.
 
+**Try it:** https://cangosg.vercel.app
+
+> The code is public so you can see what I'm building. It is not open source: all rights reserved (see `LICENSE`).
+
 ## Features
 - **Trip planner** (bus + MRT) with *Now*, *Leave at* and *Arrive by* (late routes are flagged)
 - **Bus only** switch for bus-only routes, and **📍 tap a stop** in a route to see it on the map

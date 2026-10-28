@@ -4,6 +4,14 @@ Plain-language record of every change to the app, newest first.
 
 ## 2026-10-29
 
+### Repo made public
+- So people can see what I'm building. The code is **not** open source: added an "all rights reserved" `LICENSE` (people can read it, not copy or reuse it) and a note in `README.md` with the live link.
+- Before going public:
+  - Scanned every past version: no keys, passwords or `.env` were ever uploaded.
+  - Replaced my Gmail in all past uploads with my private GitHub "noreply" address.
+  - Moved the business plan (`PLAN-free-and-paid.md`) out of the repo into a private folder next to it (`cangosg-private/`), removed it from the history, and told Git to ignore plan files.
+  - Reworded personal notes in this log.
+
 ### "Use my location" in Where to?
 Asked for after using the app: no more typing your start point every time.
 - **📍 Here button** inside the **From** box. One tap fills in "📍 Current location". If a destination is already chosen, it finds routes straight away.
@@ -25,7 +33,7 @@ Asked for after using the app: no more typing your start point every time.
 - Files: `public/app.js`, `public/sw.js` (offline cache `gosg-v19`)
 
 ### Uploaded to GitHub
-- Code is now in a **private** GitHub repo: https://github.com/ganpuazai2/cangosg
+- Code is now in a GitHub repo: https://github.com/ganpuazai2/cangosg (private at first)
 - Checked before uploading: `.env` and the keys are not included.
 
 ### Live on the web 🎉
